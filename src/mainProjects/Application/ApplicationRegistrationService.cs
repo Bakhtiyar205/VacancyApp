@@ -1,4 +1,5 @@
 ﻿using Application.Services.ExamRequirementServices;
+using Application.Services.QuestionServices;
 using Application.Services.VacancyServices;
 using Core.Application.Pipelines.Transaction;
 using Core.Application.Pipelines.Validation;
@@ -26,6 +27,7 @@ public static class ApplicationRegistrationService
 
         services.AddScoped<IExamRequirementServices, ExamRequirementService>();
         services.AddScoped<IVacancyService, VacancyService>();
+        services.AddScoped<IQuestionService, QuestionService>();
 
         return services;
     }
