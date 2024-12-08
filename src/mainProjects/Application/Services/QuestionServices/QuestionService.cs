@@ -27,7 +27,7 @@ public class QuestionService(IQuestionRepository questionRepository, QuestionRul
     #region Queries
     public async Task<Question> GetAsync(int id, CancellationToken cancellationToken = default)
     {
-        return await GetValidQuestionAsnc(questionRepository, questionRules, id, cancellationToken);
+        return await GetValidQuestionAsync(questionRepository, questionRules, id, cancellationToken);
     }
 
     public async Task<IPaginate<Question>> GetPaginatedAsync(int pageNumber, int pageSize, CancellationToken cancellationToken = default)
@@ -39,7 +39,7 @@ public class QuestionService(IQuestionRepository questionRepository, QuestionRul
 
     #region Private methods
 
-    private static async Task<Question> GetValidQuestionAsnc(IQuestionRepository questionRepository, QuestionRules questionRules, int id, CancellationToken cancellationToken)
+    private static async Task<Question> GetValidQuestionAsync(IQuestionRepository questionRepository, QuestionRules questionRules, int id, CancellationToken cancellationToken)
     {
         var question = await questionRepository.GetAsNoTrackingAsync(v => v.Id == id && !v.IsDeleted, cancellationToken: cancellationToken);
 
