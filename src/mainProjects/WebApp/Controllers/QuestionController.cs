@@ -11,9 +11,9 @@ namespace WebApp.Controllers;
 public class QuestionController : BaseController
 {
     [HttpGet]
-    public async Task<IActionResult> GetPaginatedAsync([FromQuery] PageRequest pageRequest, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetPaginatedAsync([FromQuery] PageRequest pageRequest, [FromQuery] int vacancyId, CancellationToken cancellationToken)
     {
-        return Ok(await Mediator!.Send(new GetQuestionListQuery(pageRequest.PageNumber, pageRequest.PageSize),cancellationToken));
+        return Ok(await Mediator!.Send(new GetQuestionListQuery(pageRequest.PageNumber, pageRequest.PageSize,vacancyId),cancellationToken));
     }
     [HttpGet("{id}")]
     public async Task<IActionResult> GetAsync(int id, CancellationToken cancellationToken)

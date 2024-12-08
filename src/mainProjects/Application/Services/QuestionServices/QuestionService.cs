@@ -30,9 +30,10 @@ public class QuestionService(IQuestionRepository questionRepository, QuestionRul
         return await GetValidQuestionAsync(questionRepository, questionRules, id, cancellationToken);
     }
 
-    public async Task<IPaginate<Question>> GetPaginatedAsync(int pageNumber, int pageSize, CancellationToken cancellationToken = default)
+    public async Task<IPaginate<Question>> GetPaginatedAsync(int pageNumber, int pageSize, int vacancyId, CancellationToken cancellationToken = default)
     {
-        return await questionRepository.GetPaginatedListAsync(m => !m.IsDeleted,
+        return await questionRepository.GetPaginatedListAsync(
+               m => (vacancyId != 0 ? m.VacancyId == vacancyId && !m.Vacancy.IsDeleted : m.VacancyId == m.VacancyId) && !m.IsDeleted,
                index: pageNumber, size: pageSize, enableTracking: false, cancellationToken: cancellationToken);
     }
     #endregion

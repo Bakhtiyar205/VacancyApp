@@ -33,7 +33,8 @@ public class QuestionOptionService(IQuestionOptionRepository questionOptionRepos
 
     public async Task<IPaginate<QuestionOption>> GetPaginateAsync(int pageNumber, int pageSize, int questionId = 0, CancellationToken cancellationToken = default)
     {
-        return await questionOptionRepository.GetPaginatedListAsync(m => (questionId != 0 ? m.QuestionId == questionId : m.QuestionId == m.QuestionId)  && !m.IsDeleted,
+        return await questionOptionRepository.GetPaginatedListAsync(
+               m => (questionId != 0 ? m.QuestionId == questionId && !m.Question.IsDeleted : m.QuestionId == m.QuestionId)  && !m.IsDeleted,
                index: pageNumber, size: pageSize, enableTracking: false, cancellationToken: cancellationToken);
     }
     #endregion
