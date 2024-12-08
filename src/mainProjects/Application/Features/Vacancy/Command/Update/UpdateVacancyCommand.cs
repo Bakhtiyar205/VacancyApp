@@ -15,17 +15,14 @@ public class UpdateVacancyCommand : IRequest<UpdateVacancyDto>
 
 public class UpdateVacancyCommandHandler(IVacancyService vacancyService, IMapper mapper) : IRequestHandler<UpdateVacancyCommand, UpdateVacancyDto>
 {
-    private readonly IVacancyService _vacancyService = vacancyService;
-    private readonly IMapper _mapper = mapper;
-
     public async Task<UpdateVacancyDto> Handle(UpdateVacancyCommand request, CancellationToken cancellationToken)
     {
-        var vacancy = await _vacancyService.GetAsync(request.Id, cancellationToken);
+        var vacancy = await vacancyService.GetAsync(request.Id, cancellationToken);
 
-        vacancy = _mapper.Map(request, vacancy);
+        vacancy = mapper.Map(request, vacancy);
 
-        vacancy = await _vacancyService.UpdateAsync(vacancy, cancellationToken);
+        vacancy = await vacancyService.UpdateAsync(vacancy, cancellationToken);
 
-        return _mapper.Map<UpdateVacancyDto>(vacancy);
+        return mapper.Map<UpdateVacancyDto>(vacancy);
     }
 }
