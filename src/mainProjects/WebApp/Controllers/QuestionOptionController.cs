@@ -1,5 +1,6 @@
 ﻿using Application.Features.QuestionOptions.Command.Create;
 using Application.Features.QuestionOptions.Command.Delete;
+using Application.Features.QuestionOptions.Command.DeleteByQuestion;
 using Application.Features.QuestionOptions.Command.Update;
 using Application.Features.QuestionOptions.Query.GetById;
 using Application.Features.QuestionOptions.Query.GetList;
@@ -35,6 +36,12 @@ public class QuestionOptionController : BaseController
     public async Task<IActionResult> DeleteAsync([FromRoute] int id, CancellationToken cancellationToken)
     {
         await Mediator!.Send(new DeleteQuestionOptionCommand(id), cancellationToken);
+        return NoContent();
+    }
+    [HttpDelete("Question/{id}")]
+    public async Task<IActionResult> DeleteByQuestionAsync([FromRoute] int id, CancellationToken cancellationToken, [FromQuery] int size = 100)
+    {
+        await Mediator!.Send(new DeleteByQuestionCommand(id, size), cancellationToken);
         return NoContent();
     }
 }

@@ -92,6 +92,13 @@ public class EfRepositoryBase<TEntity, TContext> : IAsyncRepository<TEntity>, IR
         return entity;
     }
 
+    public async Task<IEnumerable<TEntity>> UpdateRangeAsync(IEnumerable<TEntity> entities)
+    {
+        Context.Set<TEntity>().UpdateRange(entities);
+        await Context.SaveChangesAsync();
+        return entities;
+    }
+
     public async Task<TEntity> DeleteAsync(TEntity entity)
     {
         Context.Entry(entity).State = EntityState.Deleted;

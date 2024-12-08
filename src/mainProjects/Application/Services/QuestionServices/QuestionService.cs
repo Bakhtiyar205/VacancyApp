@@ -18,6 +18,13 @@ public class QuestionService(IQuestionRepository questionRepository, QuestionRul
         await questionRepository.UpdateAsync(question);
     }
 
+    public async Task DeleteByVacancyAsync(IList<Question> questions, CancellationToken cancellationToken = default) 
+    {
+        foreach (var question in questions) question.IsDeleted = true;
+
+        await questionRepository.UpdateRangeAsync(questions);
+    }
+
     public async Task<Question> UpdateAsync(Question request, CancellationToken cancellationToken = default)
     {
         return await questionRepository.UpdateAsync(request);

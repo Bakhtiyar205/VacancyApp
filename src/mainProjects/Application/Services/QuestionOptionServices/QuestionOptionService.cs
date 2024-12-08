@@ -19,6 +19,13 @@ public class QuestionOptionService(IQuestionOptionRepository questionOptionRepos
         await questionOptionRepository.UpdateAsync(questionOption);
     }
 
+    public async Task DeleteByQuestionAsync(IList<QuestionOption> quesstionOptions, CancellationToken cancellationToken = default)
+    {
+        foreach (var question in quesstionOptions) question.IsDeleted = true;
+
+        await questionOptionRepository.UpdateRangeAsync(quesstionOptions);
+    }
+
     public async Task<QuestionOption> UpdateAsync(QuestionOption request, CancellationToken cancellationToken = default)
     {
         return await questionOptionRepository.UpdateAsync(request);
