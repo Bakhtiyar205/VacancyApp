@@ -19,9 +19,6 @@ internal class VacancyConfiguration : IEntityTypeConfiguration<Vacancy>
             .IsRequired()
             .HasMaxLength(255);
 
-        builder.Property(builder => builder.CreatedDate)
-            .HasDefaultValue(IDateTimeProvider.Now);
-
         builder.Property(builder => builder.IsDeleted)
             .HasDefaultValue(false);
 

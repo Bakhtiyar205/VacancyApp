@@ -27,12 +27,12 @@ public class EfRepositoryBase<TEntity, TContext> : IAsyncRepository<TEntity>, IR
 
     }
 
-    public async Task<TEntity?> GetAsNoTrackingAsync(Expression<Func<TEntity, bool>> predicate, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null)
+    public async Task<TEntity?> GetAsNoTrackingAsync(Expression<Func<TEntity, bool>> predicate, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null, CancellationToken cancellationToken = default)
     {
         IQueryable<TEntity> queryable = Query();
         if (include is not null)
             queryable = include(queryable);
-        return await queryable.AsNoTracking().FirstOrDefaultAsync(predicate);
+        return await queryable.AsNoTracking().FirstOrDefaultAsync(predicate, cancellationToken);
     }
 
     public async Task<IPaginate<TEntity>> GetPaginatedListAsync(Expression<Func<TEntity, bool>>? predicate = null,

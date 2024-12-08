@@ -1,22 +1,14 @@
 ﻿using Core.CrossCuttingConcerns.Logging.Serilog.Logger;
-using Core.Mailing;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using System.Text;
 
 
 namespace Core.CrossCuttingConcerns.Logging;
-public class RequestLoggingMiddleware
+public class RequestLoggingMiddleware(RequestDelegate next, FileLogger fileLogger, IConfiguration configuration)
 {
-    private readonly RequestDelegate _next;
-    private readonly FileLogger _fileLogger;
-    private readonly Dictionary<string, string> _apiListWithoutBody;
-    public RequestLoggingMiddleware(RequestDelegate next, FileLogger fileLogger, IConfiguration configuration)
-    {
-        _next = next;
-        _fileLogger = fileLogger;
-        _apiListWithoutBody = configuration.GetSection("LogWithoutBody").Get<Dictionary<string, string>>()!;
-    }
+    private readonly Dictionary<string, string> _apiListWithoutBody = configuration.GetSection("LogWithoutBody").Get<Dictionary<string, string>>()!;
+
     public async Task Invoke(HttpContext httpContext)
     {
         bool isSwaggerRelatedRequest = httpContext.Request.Path.ToString().StartsWith("/swagger/");
@@ -47,10 +39,10 @@ public class RequestLoggingMiddleware
 
             request.Body.Position = 0;
 
-            _fileLogger.Info(LoggingText(httpContext, loggingData, clientIp, clientPort, request));
+            fileLogger.Info(LoggingText(httpContext, loggingData, clientIp, clientPort, request));
         }
 
-        await _next(httpContext);
+        await next(httpContext);
     }
 
     private string LoggingText(HttpContext httpContext, StringBuilder loggingData, string? clientIp, string clientPort, HttpRequest request)

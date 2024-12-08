@@ -1,6 +1,5 @@
 ﻿using Core.CrossCuttingConcerns.Logging;
 using Core.CrossCuttingConcerns.Logging.Serilog.Logger;
-using Core.Mailing;
 using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -10,45 +9,31 @@ using System.Text.Json;
 
 namespace Core.CrossCuttingConcerns.Exceptions;
 
-public class ExceptionMiddleware
+public class ExceptionMiddleware(RequestDelegate next, FileLogger fileLogger, IConfiguration configuration)
 {
-    private readonly RequestDelegate _next;
-    private readonly FileLogger _fileLogger;
-    private readonly Mail _mail;
-    public ExceptionMiddleware(RequestDelegate next, FileLogger fileLogger, IConfiguration configuration)
-    {
-        _next = next;
-        _fileLogger = fileLogger;
-        _mail = configuration.GetSection("MailBody").Get<Mail>()!;
-    }
-
-    public async Task Invoke(HttpContext context, IMailService mailService)
+    public async Task Invoke(HttpContext context)
     {
         try
         {
-            await _next(context);
+            await next(context);
         }
         catch (Exception exception)
         {
             await HandleExceptionAsync(context, exception);
 
-            await RegisteringFatalErrors(context, exception, mailService);
+            RegisteringFatalErrors(context, exception);
 
         }
     }
 
-    private async Task RegisteringFatalErrors(HttpContext context, Exception exception, IMailService mailService)
+    private void RegisteringFatalErrors(HttpContext context, Exception exception)
     {
         if (!(exception is BaseException ||
-           exception is ValidationException || 
+           exception is ValidationException ||
            exception is TaskCanceledException))
         {
             var serializedException = string.Concat("[HTTP]", JsonSerializer.Serialize(GetLogParameterDetailException(exception, context)));
-            _fileLogger.Fatal(serializedException);
-
-            _mail.HtmlBody = serializedException;
-
-            await mailService.SendMailAsync(_mail);
+            fileLogger.Fatal(serializedException);
         }
     }
 
@@ -66,14 +51,16 @@ public class ExceptionMiddleware
     {
         context.Response.StatusCode = Convert.ToInt32(HttpStatusCode.NotFound);
 
-        return context.Response.WriteAsync(new AuthorizationProblemDetails
+        var test = new NotFoundProblemDetails
         {
             Status = StatusCodes.Status404NotFound,
             Type = "https://example.com/probs/authorization",
             Title = "Not Found exception",
             Detail = exception.Message,
             Instance = ""
-        }.ToString());
+        }.ToString();
+
+        return context.Response.WriteAsync(test);
     }
 
     private Task CreateAuthorizationException(HttpContext context, Exception exception)

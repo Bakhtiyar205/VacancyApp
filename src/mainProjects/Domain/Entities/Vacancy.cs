@@ -1,5 +1,5 @@
 ﻿namespace Domain.Entities;
-public class Vacancy : Entity
+public class Vacancy : AuditableEntity
 {
     public string Title { get; set; } = default!;
     public string Description { get; set; } = default!;

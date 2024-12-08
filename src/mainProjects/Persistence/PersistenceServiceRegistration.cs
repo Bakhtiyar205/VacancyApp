@@ -1,7 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Application.Repositories;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Persistence.Context;
+using Persistence.Repositories;
 
 namespace Persistence;
 public static class PersistenceServiceRegistration
@@ -10,12 +12,15 @@ public static class PersistenceServiceRegistration
     {
         services.AddDbContext<AppDbContext>(options =>
             options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
-        //services.AddScoped<IUnitOfWork, UnitOfWork>();
-        //services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-        //services.AddScoped<IPersonRepository, PersonRepository>();
-        //services.AddScoped<IVacancyRepository, VacancyRepository>();
-        //services.AddScoped<IPersonVacancyRepository, PersonVacancyRepository>();
-        //services.AddScoped<IExamRequirmentRepository, ExamRequirmentRepository>();
+
+        services.AddScoped<IExamRequirementRepository, ExamRequirementRepository>();
+        services.AddScoped<IPersonRepository, PersonRepository>();
+        services.AddScoped<IPersonQuestionRepository, PersonQuestionRepository>();
+        services.AddScoped<IPersonVacancyRepository, PersonVacancyRepository>();
+        services.AddScoped<IQuestionRepository, QuestionRepository>();
+        services.AddScoped<IQuestionOptionRepository, QuestionOptionRepository>();
+        services.AddScoped<IVacancyRepository, VacancyRepository>();
+
         return services;
     }
 }

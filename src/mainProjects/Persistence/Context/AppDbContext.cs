@@ -1,5 +1,6 @@
 ﻿using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using Persistence.Context.Interceptors;
 
 namespace Persistence.Context;
 public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
@@ -12,6 +13,12 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
     public DbSet<QuestionOption> QuestionOptions { get; set; } = default!;
     public DbSet<Vacancy> Vacancies { get; set; } = default!;
 
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        optionsBuilder.AddInterceptors(new AuditSaveChangesInterceptor());
+
+        base.OnConfiguring(optionsBuilder);
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

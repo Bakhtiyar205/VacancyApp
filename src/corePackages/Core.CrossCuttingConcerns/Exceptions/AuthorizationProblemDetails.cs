@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
+using System.Text.Json;
 
 namespace Core.CrossCuttingConcerns.Exceptions;
 
 public class AuthorizationProblemDetails : ProblemDetails
 {
-    public override string ToString() => JsonConvert.SerializeObject(this);
+    public override string ToString() => JsonSerializer.Serialize(this);
 }

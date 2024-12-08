@@ -11,12 +11,6 @@ internal class PersonVacancyConfiguration : IEntityTypeConfiguration<PersonVacan
     {
         builder.HasKey(builder => builder.Id);
 
-        builder.Property(builder => builder.CreatedDate)
-            .HasDefaultValue(IDateTimeProvider.Now);
-
-        builder.Property(builder => builder.IsDeleted)
-            .HasDefaultValue(false);
-
         builder.HasOne(builder => builder.Person)
             .WithMany(builder => builder.PersonVacancies)
             .HasForeignKey(builder => builder.PersonId)

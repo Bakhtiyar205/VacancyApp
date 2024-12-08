@@ -1,7 +1,8 @@
-﻿using Core.Persistence.Paging;
+﻿using Application.Features.ExamRequirements.Dto;
+using Core.Persistence.Paging;
 
-namespace Application.Features.ExamRequirements.Dto.Model;
+namespace Application.Features.ExamRequirements.Model;
 public class ExamRequirementListModel : BasePageableModel
 {
-    public IList<ExamRequiementListDto> Items { get; set; } = [];
+    public IList<ExamRequiementListDto?> Items { get; set; } = [];
 }

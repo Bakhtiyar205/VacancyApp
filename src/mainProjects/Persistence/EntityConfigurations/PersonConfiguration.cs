@@ -33,9 +33,6 @@ internal class PersonConfiguration : IEntityTypeConfiguration<Person>
 
         builder.Property(builder => builder.IsParticipated)
             .HasDefaultValue(false);
-        
-        builder.Property(builder => builder.CreatedDate)
-            .HasDefaultValue(IDateTimeProvider.Now);
 
         builder.Property(builder => builder.IsDeleted)
             .HasDefaultValue(false);

@@ -1,4 +1,6 @@
 ﻿namespace Application.Features.Vacancies.Constant;
-public class VacancyMessages
+public static class VacancyMessages
 {
+    public static string NotFound => "Vacancy is not found";
+    public static string AlreadyExist => "This vacancy is exist already";
 }

@@ -1,5 +1,5 @@
 ﻿namespace Domain.Entities;
-public class QuestionOption : Entity
+public class QuestionOption : AuditableEntity
 {
     public string Option { get; set; } = default!;
     public bool IsAnswer { get; set; }

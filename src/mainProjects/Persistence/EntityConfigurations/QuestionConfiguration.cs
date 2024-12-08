@@ -19,9 +19,6 @@ internal class QuestionConfiguration : IEntityTypeConfiguration<Question>
         builder.Property(builder => builder.OptionCount)
             .HasDefaultValue(3);
 
-        builder.Property(builder => builder.CreatedDate)
-            .HasDefaultValue(IDateTimeProvider.Now);
-
         builder.Property(builder => builder.IsDeleted)
             .HasDefaultValue(false);    
 

@@ -5,6 +5,6 @@ public class DeleteExamRequirementValidator : AbstractValidator<DeleteExamRequir
 {
     public DeleteExamRequirementValidator()
     {
-        RuleFor(x => x.Id).LessThanOrEqualTo(0).WithMessage("Id has to be greater than 0");
+        RuleFor(x => x.Id).GreaterThan(0).WithMessage("Id is required");
     }
 }

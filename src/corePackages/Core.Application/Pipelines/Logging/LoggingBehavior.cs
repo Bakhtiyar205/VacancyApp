@@ -2,7 +2,7 @@
 using Core.CrossCuttingConcerns.Logging.Serilog;
 using MediatR;
 using Microsoft.AspNetCore.Http;
-using Newtonsoft.Json;
+using System.Text.Json;
 
 namespace Core.Application.Pipelines.Logging;
 
@@ -41,7 +41,7 @@ public class LoggingBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, 
                        : _httpContextAccessor.HttpContext.User.Identity.Name
         };
 
-        _loggerServiceBase.Info(JsonConvert.SerializeObject(logDetail));
+        _loggerServiceBase.Info(JsonSerializer.Serialize(logDetail));
 
         return next();
     }

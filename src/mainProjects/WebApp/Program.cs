@@ -1,5 +1,7 @@
+using Core.CrossCuttingConcerns.Exceptions;
 using Application;
 using Persistence;
+using Infrastructure;
 using Microsoft.Extensions.Configuration;
 namespace WebApp;
 
@@ -19,11 +21,13 @@ public class Program
 
         services.AddApplicationServices(builder.Configuration);
         services.AddPersistenceServices(configuration);
+        services.AddInfrastructureServices(configuration);
 
 
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.
+        app.ConfigureCustomExceptionMiddleware();
 
         app.UseAuthorization();
 
