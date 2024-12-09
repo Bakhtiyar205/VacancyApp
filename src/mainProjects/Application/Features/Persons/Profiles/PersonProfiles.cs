@@ -1,5 +1,6 @@
 ﻿using Application.Features.Persons.Command.Create;
 using Application.Features.Persons.Dto;
+using Application.Features.Persons.Dto.PersonVacancy;
 using Application.Features.Persons.Model;
 using AutoMapper;
 using Core.Persistence.Paging;
@@ -19,5 +20,7 @@ public class PersonProfiles : Profile
         CreateMap<Person, PersonListDto>();
 
         CreateMap<IPaginate<Person>, PersonListModel>();
+
+        CreateMap<Person, PersonForVacancyDto>();
     }
 }

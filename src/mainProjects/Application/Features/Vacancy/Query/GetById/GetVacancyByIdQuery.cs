@@ -13,7 +13,7 @@ public class GetVacancyByIdQueryHandler(IVacancyService vacancyService, IMapper 
 {
     public async Task<GetVacancyDto> Handle(GetVacancyByIdQuery request, CancellationToken cancellationToken)
     {
-        var vacancy = await vacancyService.GetAsync(request.Id, cancellationToken);
+        var vacancy = await vacancyService.GetVacancyWithPersonAsync(request.Id, cancellationToken);
 
         return mapper.Map<GetVacancyDto>(vacancy);
     }

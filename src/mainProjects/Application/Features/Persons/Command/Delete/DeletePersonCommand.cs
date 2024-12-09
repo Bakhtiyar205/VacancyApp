@@ -1,4 +1,5 @@
-﻿using Application.Services.PersonServices;
+﻿using Application.Services.PersonQuestionServices;
+using Application.Services.PersonServices;
 using Application.Services.PersonVacancyServices;
 using Core.Application.Pipelines.Transaction;
 using MediatR;
@@ -9,7 +10,7 @@ public class DeletePersonCommand : IRequest<Unit>, ITransactionalRequest
     public int Id { get; set; }
 }
 
-public class DeletePersonCommandHandler(IPersonService personService, IPersonVacancyService personVacancyService) : IRequestHandler<DeletePersonCommand, Unit>
+public class DeletePersonCommandHandler(IPersonService personService, IPersonVacancyService personVacancyService, IPersonQuestionService personQuestionService) : IRequestHandler<DeletePersonCommand, Unit>
 {
     public async Task<Unit> Handle(DeletePersonCommand request, CancellationToken cancellationToken)
     {
@@ -17,6 +18,9 @@ public class DeletePersonCommandHandler(IPersonService personService, IPersonVac
 
         var personVacancies = await personVacancyService.GetByPersonIdAsync(request.Id, cancellationToken);
         personVacancyService.DeleteRange(personVacancies);
+
+        var personQuestions = await personQuestionService.GetByPersonIdAsync(request.Id, cancellationToken);
+        personQuestionService.DeleteRange(personQuestions);
 
         await personService.DeleteAsync(person, cancellationToken);
 

@@ -1,4 +1,5 @@
-﻿using Application.Features.Vacancies.Rules;
+﻿using Application.Features.Persons.Rules;
+using Application.Features.Vacancies.Rules;
 using Application.Repositories;
 using Core.Persistence.Paging;
 using Domain.Entities;
@@ -41,6 +42,12 @@ public class VacancyService(IVacancyRepository vacancyRepository, VacancyRules v
     {
         return await vacancyRepository.GetPaginatedListAsync(m => !m.IsDeleted,
                index: pageNumber, size: pageSize, enableTracking: false, cancellationToken: cancellationToken);
+    }
+
+    public async Task<Vacancy> GetVacancyWithPersonAsync(int id, CancellationToken cancellationToken = default)
+    {
+        var vacancy = await vacancyRepository.GetVacancyWithPersonAsync(id, cancellationToken);
+        return vacancyRules.Validate(vacancy);
     }
 
     #endregion

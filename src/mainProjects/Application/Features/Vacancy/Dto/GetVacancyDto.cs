@@ -1,4 +1,5 @@
-﻿using Core.Domain.Dtos;
+﻿using Application.Features.PersonVacancies.Dto.Vacancy;
+using Core.Domain.Dtos;
 
 namespace Application.Features.Vacancies.Dto;
 public class GetVacancyDto : BaseDto
@@ -9,4 +10,5 @@ public class GetVacancyDto : BaseDto
     public DateTime? EndDate { get; set; }
     public DateTime? CreatedDate { get; set; }
     public DateTime? UpdatedDate { get; set; }
+    public ICollection<PersonVacancyForVacancyDto> PersonVacancies { get; set; } = new List<PersonVacancyForVacancyDto>();
 }

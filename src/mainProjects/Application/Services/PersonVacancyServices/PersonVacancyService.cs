@@ -1,5 +1,4 @@
 ﻿using Application.Repositories;
-using Core.Persistence.Paging;
 using Domain.Entities;
 
 namespace Application.Services.PersonVacancyServices;

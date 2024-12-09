@@ -8,5 +8,6 @@ public interface IVacancyService
     Task DeleteAsync(Vacancy vacancy, CancellationToken cancellationToken = default);
     Task<Vacancy> UpdateAsync(Vacancy request, CancellationToken cancellationToken = default);
     Task<Vacancy> GetAsync(int id, CancellationToken cancellationToken = default);
+    Task<Vacancy> GetVacancyWithPersonAsync(int id, CancellationToken cancellationToken = default);
     Task<IPaginate<Vacancy>> GetPaginatedAsync(int pageNumber, int pageSize, CancellationToken cancellationToken = default);
 }

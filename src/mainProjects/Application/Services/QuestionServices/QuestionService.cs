@@ -43,9 +43,14 @@ public class QuestionService(IQuestionRepository questionRepository, QuestionRul
                m => (vacancyId != 0 ? m.VacancyId == vacancyId && !m.Vacancy.IsDeleted : m.VacancyId == m.VacancyId) && !m.IsDeleted,
                index: pageNumber, size: pageSize, enableTracking: false, cancellationToken: cancellationToken);
     }
+
+    public async Task<IList<Question>> GetQuestionForPerson(int vacancyId, int examQuestionCount, CancellationToken cancellationToken = default)
+    {
+        return await questionRepository.GetQuestionsByVacancyIdAsync(vacancyId, examQuestionCount, cancellationToken);
+    }
     #endregion
 
-    #region Private methods
+        #region Private methods
 
     private static async Task<Question> GetValidQuestionAsync(IQuestionRepository questionRepository, QuestionRules questionRules, int id, CancellationToken cancellationToken)
     {

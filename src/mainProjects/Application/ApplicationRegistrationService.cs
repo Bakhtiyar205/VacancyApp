@@ -1,4 +1,5 @@
 ﻿using Application.Services.ExamRequirementServices;
+using Application.Services.PersonQuestionServices;
 using Application.Services.PersonServices;
 using Application.Services.PersonVacancyServices;
 using Application.Services.QuestionOptionServices;
@@ -34,6 +35,7 @@ public static class ApplicationRegistrationService
         services.AddScoped<IQuestionOptionService, QuestionOptionService>();
         services.AddScoped<IPersonService, PersonService>();
         services.AddScoped<IPersonVacancyService, PersonVacancyService>();
+        services.AddScoped<IPersonQuestionService, PersonQuestionService>();
 
         return services;
     }
