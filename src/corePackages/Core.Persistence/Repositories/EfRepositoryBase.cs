@@ -106,6 +106,11 @@ public class EfRepositoryBase<TEntity, TContext> : IAsyncRepository<TEntity>, IR
         return entity;
     }
 
+    public async Task DeleteRangeAsync(IEnumerable<TEntity> entities)
+    {
+        Context.Set<TEntity>().RemoveRange(entities);
+        await Context.SaveChangesAsync();
+    }
     public TEntity? Get(Expression<Func<TEntity, bool>> predicate, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null)
     {
         IQueryable<TEntity> queryable = Query();

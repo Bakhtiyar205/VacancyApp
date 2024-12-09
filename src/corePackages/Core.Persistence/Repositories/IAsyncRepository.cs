@@ -30,4 +30,5 @@ public interface IAsyncRepository<T> : IQuery<T> where T : Entity
     Task<T> UpdateAsync(T entity);
     Task<IEnumerable<T>> UpdateRangeAsync(IEnumerable<T> entities);
     Task<T> DeleteAsync(T entity);
+    Task DeleteRangeAsync(IEnumerable<T> entities);
 }
