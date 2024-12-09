@@ -11,4 +11,9 @@ public class QuestionRules : BaseBusinessRules
         if (question is null) throw new NotFoundException(NotFound);
         return question;
     }
+
+    public void CheckList(IList<Question> questionList,string message)
+    {
+        if(questionList.Any()) throw new BusinessException(message);
+    }
 }

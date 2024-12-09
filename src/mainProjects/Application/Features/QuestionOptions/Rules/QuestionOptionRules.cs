@@ -28,4 +28,9 @@ public class QuestionOptionRules : BaseBusinessRules
             throw new BusinessException(OnlyOneCorrectAnswer);
         }
     }
+
+    public void CheckList(IList<QuestionOption> questionOptions, string message)
+    {
+        if (questionOptions.Any()) throw new BusinessException(message);
+    }
 }
