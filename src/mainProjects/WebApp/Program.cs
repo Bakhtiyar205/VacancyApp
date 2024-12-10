@@ -19,6 +19,15 @@ public class Program
 
         services.AddControllers();
 
+        services.AddCors(options =>
+        {
+            options.AddPolicy(name: "VacancyCorsPolicy",
+                     configurePolicy: corsPolicyBuilder => corsPolicyBuilder
+                    .WithOrigins("http://localhost:4200")
+                    .AllowAnyHeader()
+                    .AllowAnyMethod());
+        });
+
         services.AddApplicationServices(builder.Configuration);
         services.AddPersistenceServices(configuration);
         services.AddInfrastructureServices(configuration);
@@ -28,6 +37,8 @@ public class Program
 
         // Configure the HTTP request pipeline.
         app.ConfigureCustomExceptionMiddleware();
+
+        app.UseCors("VacancyCorsPolicy");
 
         app.UseAuthorization();
 

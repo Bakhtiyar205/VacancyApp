@@ -11,8 +11,10 @@ public class QuestionProfiles : Profile
 {
     public QuestionProfiles()
     {
-        CreateMap<Question, GetQuestionDto>();
-        CreateMap<Question, QuestionListDto>();
+        CreateMap<Question, GetQuestionDto>()
+            .ForMember(m => m.VacancyName, opt => opt.MapFrom(src => src.Vacancy.Title));
+        CreateMap<Question, QuestionListDto>()
+            .ForMember(m => m.VacancyName, opt => opt.MapFrom(src => src.Vacancy.Title));
         CreateMap<IPaginate<Question>, QuestionListModel>();
         CreateMap<CreateQuestionCommand, Question>();
         CreateMap<UpdateQuestionCommand, Question>();

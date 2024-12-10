@@ -2,6 +2,7 @@
 using Application.Repositories;
 using Core.Persistence.Paging;
 using Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Services.QuestionServices;
 public class QuestionService(IQuestionRepository questionRepository, QuestionRules questionRules) : IQuestionService
@@ -41,6 +42,7 @@ public class QuestionService(IQuestionRepository questionRepository, QuestionRul
     {
         return await questionRepository.GetPaginatedListAsync(
                m => (vacancyId != 0 ? m.VacancyId == vacancyId && !m.Vacancy.IsDeleted : m.VacancyId == m.VacancyId) && !m.IsDeleted,
+               include: m => m.Include(n => n.Vacancy),
                index: pageNumber, size: pageSize, enableTracking: false, cancellationToken: cancellationToken);
     }
 
@@ -54,7 +56,7 @@ public class QuestionService(IQuestionRepository questionRepository, QuestionRul
 
     private static async Task<Question> GetValidQuestionAsync(IQuestionRepository questionRepository, QuestionRules questionRules, int id, CancellationToken cancellationToken)
     {
-        var question = await questionRepository.GetAsNoTrackingAsync(v => v.Id == id && !v.IsDeleted, cancellationToken: cancellationToken);
+        var question = await questionRepository.GetAsNoTrackingAsync(v => v.Id == id && !v.IsDeleted, n=> n.Include(m=>m.Vacancy), cancellationToken);
 
         return questionRules.Validate(question);
     }

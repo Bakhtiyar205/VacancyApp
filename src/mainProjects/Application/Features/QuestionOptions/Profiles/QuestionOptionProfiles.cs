@@ -12,7 +12,10 @@ public class QuestionOptionProfiles : Profile
     public QuestionOptionProfiles()
     {
         CreateMap<QuestionOption, GetQuestionOptionDto>();
-        CreateMap<QuestionOption, QuestionOptionListDto>();
+
+        CreateMap<QuestionOption, QuestionOptionListDto>()
+            .ForMember(m => m.QuestionName, opt => opt.MapFrom(src => src.Question.QuestionDetail));
+
         CreateMap<IPaginate<QuestionOption>, QuestionOptionListModel>();
 
         CreateMap<CreateQuestionOptionCommand, QuestionOption>();

@@ -2,6 +2,7 @@
 using Application.Repositories;
 using Core.Persistence.Paging;
 using Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Services.QuestionOptionServices;
 public class QuestionOptionService(IQuestionOptionRepository questionOptionRepository, QuestionOptionRules questionOptionRules) : IQuestionOptionService
@@ -42,6 +43,8 @@ public class QuestionOptionService(IQuestionOptionRepository questionOptionRepos
     {
         return await questionOptionRepository.GetPaginatedListAsync(
                m => (questionId != 0 ? m.QuestionId == questionId && !m.Question.IsDeleted : m.QuestionId == m.QuestionId)  && !m.IsDeleted,
+               orderBy: m => m.OrderBy(n => n.QuestionId),
+               include: m => m.Include(t => t.Question),
                index: pageNumber, size: pageSize, enableTracking: false, cancellationToken: cancellationToken);
     }
     #endregion
