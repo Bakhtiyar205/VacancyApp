@@ -20,7 +20,5 @@ public class VacancyProfiles : Profile
 
         CreateMap<CreateVacancyCommand, Vacancy>();
         CreateMap<UpdateVacancyCommand, Vacancy>();
-
-        CreateMap<Vacancy, VacancyForPersonDto>();
     }
 }
