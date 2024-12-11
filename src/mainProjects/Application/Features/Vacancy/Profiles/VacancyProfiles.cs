@@ -2,7 +2,6 @@
 using Application.Features.Vacancies.Command.Update;
 using Application.Features.Vacancies.Dto;
 using Application.Features.Vacancies.Model;
-using Application.Features.Vacancies.Dto.PersonVacancy;
 using AutoMapper;
 using Core.Persistence.Paging;
 using Domain.Entities;

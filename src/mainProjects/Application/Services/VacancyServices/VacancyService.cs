@@ -3,6 +3,7 @@ using Application.Features.Vacancies.Rules;
 using Application.Repositories;
 using Core.Persistence.Paging;
 using Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Services.VacancyServices;
 public class VacancyService(IVacancyRepository vacancyRepository, VacancyRules vacancyRules) : IVacancyService
@@ -35,7 +36,17 @@ public class VacancyService(IVacancyRepository vacancyRepository, VacancyRules v
     #region Queries
     public async Task<Vacancy> GetAsync(int id, CancellationToken cancellationToken = default)
     {
-        return await GetValidVacancyAsync(id, cancellationToken);
+        var vacancy = await vacancyRepository.GetAsNoTrackingAsync(v => v.Id == id && !v.IsDeleted, cancellationToken: cancellationToken);
+
+        return vacancyRules.Validate(vacancy);
+    }
+
+    public async Task<Vacancy> GetWithQuestionsAsync(int id, CancellationToken cancellationToken = default)
+    {
+        var vacancy = await vacancyRepository
+            .GetAsNoTrackingAsync(v=>v.Id == id && !v.IsDeleted, c => c.Include(m=>m.Questions.Where(t=>!t.IsDeleted)), cancellationToken);
+
+        return vacancyRules.Validate(vacancy);
     }
 
     public async Task<IPaginate<Vacancy>> GetPaginatedAsync(int pageNumber, int pageSize, CancellationToken cancellationToken = default)
@@ -53,13 +64,6 @@ public class VacancyService(IVacancyRepository vacancyRepository, VacancyRules v
     #endregion
 
     #region Private methods
-    private async Task<Vacancy> GetValidVacancyAsync(int id, CancellationToken cancellationToken = default)
-    {
-        var vacancy = await vacancyRepository.GetAsNoTrackingAsync(v => v.Id == id && !v.IsDeleted, cancellationToken: cancellationToken);
-
-        return vacancyRules.Validate(vacancy);
-    }
-
     private async Task CheckAnotherValidVacancyAsync(string title, int? id = null, CancellationToken cancellationToken = default)
     {
         var vacancy = await vacancyRepository.GetAsNoTrackingAsync(v => (id != null ? v.Id != id : v.Id == v.Id)

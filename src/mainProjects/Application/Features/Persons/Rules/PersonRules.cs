@@ -15,4 +15,14 @@ public class PersonRules : BaseBusinessRules
     {
         if (person != null) throw new BusinessException("Person already exists");
     }
+
+    public void IsAgreeExam(bool isAgree)
+    {
+        if (!isAgree) throw new BusinessException("You can not apply to this exam");
+    }
+
+    public void IsPersonVacancyExist(PersonVacancy? personVacancy)
+    {
+        if (personVacancy == null) throw new BusinessException("You can not participate this exam");
+    }
 }

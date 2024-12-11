@@ -1,12 +1,9 @@
-﻿using Application.Features.Persons.Command.Create;
+﻿using Application.Features.Persons.Command.AddCv;
+using Application.Features.Persons.Command.AgreeExam;
+using Application.Features.Persons.Command.Create;
 using Application.Features.Persons.Query.GetById;
+using Application.Features.Persons.Query.GetCv;
 using Application.Features.Persons.Query.GetList;
-using Application.Features.Questions.Command.Create;
-using Application.Features.Questions.Command.Delete;
-using Application.Features.Questions.Command.DeleteByVacancy;
-using Application.Features.Questions.Command.Update;
-using Application.Features.Questions.Query.GetById;
-using Application.Features.Questions.Query.GetList;
 using Core.Application.Requests;
 using Microsoft.AspNetCore.Mvc;
 
@@ -28,5 +25,27 @@ public class PersonController : BaseController
     public async Task<IActionResult> CreateAsync([FromBody] CreatePersonCommand request, CancellationToken cancellationToken)
     {
         return Ok(await Mediator!.Send(request, cancellationToken));
+    }
+
+    [HttpPut("{id}")]
+    public async Task<IActionResult> AgreeExam([FromRoute] int id, [FromBody] AgreeExamCommand agreeExamCommand, CancellationToken cancellationToken)
+    {
+        agreeExamCommand.PersonId = id;
+        return Ok(await Mediator!.Send(agreeExamCommand, cancellationToken));
+    }
+
+    [HttpPatch("{id}")]
+    public async Task<IActionResult> AddCv([FromRoute] int id, [FromForm] IFormFile file, CancellationToken cancellationToken)
+    {
+        return Ok(await Mediator!.Send(new AddCvCommand(id, file), cancellationToken));
+    }
+
+    [HttpGet("getCv/{id}")]
+    public async Task<IActionResult> GetCv([FromRoute] int id, CancellationToken cancellationToken)
+    {
+        var path = await Mediator!.Send(new GetCvData(id), cancellationToken);
+
+
+        return File(path.FileByte, path.FileType, Path.GetFileName(path.FilePath));
     }
 }
