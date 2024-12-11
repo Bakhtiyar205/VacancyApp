@@ -1,10 +1,8 @@
 ﻿using Application.Features.QuestionOptions.Dto;
 using Application.Features.QuestionOptions.Rules;
-using Application.Features.Questions.Dto;
 using Application.Services.QuestionOptionServices;
 using Application.Services.QuestionServices;
 using AutoMapper;
-using Core.CrossCuttingConcerns.Exceptions;
 using Domain.Entities;
 using MediatR;
 
@@ -23,13 +21,15 @@ public class CreateQuestionOptionCommandHandler(IQuestionOptionService questionO
     {
         var questionOption = mapper.Map<QuestionOption>(request);
 
-        await questionService.GetAsync(request.QuestionId);
+        var question = await questionService.GetAsync(request.QuestionId);
 
         var answeredQuestionOption = await questionOptionService.GetPaginateAsync(0, 1, request.QuestionId, cancellationToken);
-        
+
         questionOptionRules.EnsureCorrectAnswerFirst(answeredQuestionOption.Items, request.IsAnswer);
 
         questionOptionRules.CheckSecondaryAnswer(answeredQuestionOption.Items, request.IsAnswer);
+
+        await questionOptionService.CheckQuestionLimit(question.Id, question.OptionCount, cancellationToken: cancellationToken);
 
         questionOption = await questionOptionService.CreateAsync(questionOption);
 

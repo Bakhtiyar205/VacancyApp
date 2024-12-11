@@ -36,7 +36,8 @@ public class QuestionOptionService(IQuestionOptionRepository questionOptionRepos
     #region Queries
     public async Task<QuestionOption> GetAsync(int id, CancellationToken cancellationToken = default)
     {
-        return await GetValidQuestionOptionAsync(questionOptionRepository, questionOptionRules, id, cancellationToken);
+        var questionOption = await questionOptionRepository.GetAsNoTrackingAsync(v => v.Id == id && !v.IsDeleted, cancellationToken: cancellationToken);
+        return questionOptionRules.Validate(questionOption);
     }
 
     public async Task<IPaginate<QuestionOption>> GetPaginateAsync(int pageNumber, int pageSize, int questionId = 0, CancellationToken cancellationToken = default)
@@ -47,13 +48,12 @@ public class QuestionOptionService(IQuestionOptionRepository questionOptionRepos
                include: m => m.Include(t => t.Question),
                index: pageNumber, size: pageSize, enableTracking: false, cancellationToken: cancellationToken);
     }
-    #endregion
 
-    #region Private methods
-    public async Task<QuestionOption> GetValidQuestionOptionAsync(IQuestionOptionRepository questionOptionRepository, QuestionOptionRules questionOptionRules, int id, CancellationToken cancellationToken)
+    public async Task CheckQuestionLimit(int questionId, int questionOptionCount, int id = 0, CancellationToken cancellationToken = default)
     {
-        var questionOption = await questionOptionRepository.GetAsNoTrackingAsync(v => v.Id == id && !v.IsDeleted, cancellationToken: cancellationToken);
-        return questionOptionRules.Validate(questionOption);
+        var questionOptions = await questionOptionRepository.GetIdsByQuestionAsync(questionId, cancellationToken);
+
+        questionOptionRules.QuestionLimit(questionOptions,questionOptionCount, id);
     }
     #endregion
 }

@@ -8,7 +8,8 @@ public class PersonVacancyProfiles : Profile
 {
     public PersonVacancyProfiles()
     {
-        CreateMap<PersonVacancy, PersonVacancyForPersonDto>();
+        CreateMap<PersonVacancy, PersonVacancyForPersonDto>()
+            .ForMember(m => m.VacancyName, opt => opt.MapFrom(src => src.Vacancy.Title));
 
         CreateMap<PersonVacancy, PersonVacancyForVacancyDto>();
     }

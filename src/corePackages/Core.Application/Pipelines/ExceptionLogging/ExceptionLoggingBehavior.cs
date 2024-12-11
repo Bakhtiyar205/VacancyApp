@@ -1,5 +1,4 @@
-﻿using Core.CrossCuttingConcerns.Exceptions;
-using Core.CrossCuttingConcerns.Logging;
+﻿using Core.CrossCuttingConcerns.Logging;
 using Core.CrossCuttingConcerns.Logging.Serilog.Logger;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -52,7 +51,7 @@ public class ExceptionLoggingBehavior<TRequest, TResponse> : IPipelineBehavior<T
                 {
                     new LogParameter()
                     {
-                        Name = "Token",
+                        Name = _httpContextAccessor.HttpContext?.Request.Method,
                         Value = JsonSerializer.Serialize(_httpContextAccessor.HttpContext?.Request.Headers["Authorization"])
                     }
                 }

@@ -11,4 +11,5 @@ public interface IQuestionOptionService
     Task<QuestionOption> UpdateAsync(QuestionOption request, CancellationToken cancellationToken = default);
     Task<QuestionOption> GetAsync(int id, CancellationToken cancellationToken = default);
     Task<IPaginate<QuestionOption>> GetPaginateAsync(int pageNumber, int pageSize, int questionId = 0, CancellationToken cancellationToken = default);
+    Task CheckQuestionLimit(int questionId, int questionOptionCount, int id = 0, CancellationToken cancellationToken = default);
 }

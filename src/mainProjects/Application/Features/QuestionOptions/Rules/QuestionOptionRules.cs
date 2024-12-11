@@ -33,4 +33,17 @@ public class QuestionOptionRules : BaseBusinessRules
     {
         if (questionOptions.Any()) throw new BusinessException(message);
     }
+
+    public void QuestionLimit(IList<int> questionOptionIds,int questionOptionCount, int id)
+    {
+        if (id == 0 && questionOptionCount == questionOptionIds.Count())
+        {
+            throw new BusinessException(QuestionLimitErrorMessage);
+        }
+
+        if (id != 0 && !questionOptionIds.Contains(id) && questionOptionCount == questionOptionIds.Count())
+        {
+            throw new BusinessException(QuestionLimitErrorMessage);
+        }
+    }
 }
