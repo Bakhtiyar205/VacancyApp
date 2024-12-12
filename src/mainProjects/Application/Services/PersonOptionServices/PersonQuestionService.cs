@@ -1,10 +1,12 @@
-﻿using Application.Repositories;
+﻿using Application.Features.PersonQuestions.Rules;
+using Application.Repositories;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.Services.PersonQuestionServices;
-public class PersonQuestionService(IPersonQuestionRepository personQuestionRepository) : IPersonQuestionService
+public class PersonQuestionService(IPersonQuestionRepository personQuestionRepository, PersonQuestionRule personQuestionRule) : IPersonQuestionService
 {
+    #region Commands
     public async Task<PersonQuestion> CreateAsync(PersonQuestion personVacancy, CancellationToken cancellationToken = default)
     {
         return await personQuestionRepository.AddAsync(personVacancy);
@@ -18,6 +20,20 @@ public class PersonQuestionService(IPersonQuestionRepository personQuestionRepos
     public void DeleteRange(IList<PersonQuestion> personVacancies)
     {
         personQuestionRepository.DeleteRange(personVacancies);
+    }
+
+    public async Task UpdateAsync(PersonQuestion personVacancy, CancellationToken cancellationToken = default)
+    {
+        await personQuestionRepository.UpdateAsync(personVacancy);
+    }
+    #endregion
+
+    #region Queries
+
+    public async Task<PersonQuestion> GetByIdAsync(int id, CancellationToken cancellationToken = default)
+    {
+        var data = await personQuestionRepository.GetAsync(m=>m.Id == id);
+        return personQuestionRule.Validate(data);
     }
 
     public async Task<IList<PersonQuestion>> GetByPersonIdAsync(int personId, CancellationToken cancellationToken = default)
@@ -37,4 +53,5 @@ public class PersonQuestionService(IPersonQuestionRepository personQuestionRepos
                           include: m=>m.Include(x=>x.Question).ThenInclude(y=>y.QuestionOptions.Where(c=>!c.IsDeleted)), 
                           enableTracking: false, cancellationToken: cancellationToken);
     }
+    #endregion
 }

@@ -34,7 +34,7 @@ public class PersonController : BaseController
         return Ok(await Mediator!.Send(agreeExamCommand, cancellationToken));
     }
 
-    [HttpPatch("{id}")]
+    [HttpPut("cv/{id}")]
     public async Task<IActionResult> AddCv([FromRoute] int id, [FromForm] IFormFile file, CancellationToken cancellationToken)
     {
         return Ok(await Mediator!.Send(new AddCvCommand(id, file), cancellationToken));
