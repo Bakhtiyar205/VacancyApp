@@ -12,6 +12,11 @@ internal class PersonQuestionConfiguration : IEntityTypeConfiguration<PersonQues
     {
         builder.HasKey(builder => builder.Id);
 
+        builder.HasOne(builder => builder.Vacancy)
+            .WithMany(builder => builder.PersonQuestions)
+            .HasForeignKey(builder => builder.VacancyId)
+            .OnDelete(DeleteBehavior.ClientSetNull);
+
         builder.HasOne(builder => builder.Person)
             .WithMany(builder => builder.PersonQuestions)
             .HasForeignKey(builder => builder.PersonId)

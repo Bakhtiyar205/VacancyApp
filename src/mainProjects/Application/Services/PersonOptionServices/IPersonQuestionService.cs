@@ -8,4 +8,5 @@ public interface IPersonQuestionService
     void DeleteRange(IList<PersonQuestion> personVacancies);
     Task<IList<PersonQuestion>> GetByPersonIdAsync(int personId, CancellationToken cancellationToken = default);
     Task<IList<PersonQuestion>> GetByQuestionIdAsync(int questionId, CancellationToken cancellationToken = default);
+    Task<IList<PersonQuestion>> GetListByPersonVacancyIdAsync(int personId, int vacancyId, CancellationToken cancellationToken = default);
 }

@@ -1,6 +1,7 @@
 ﻿using Application.Features.Questions.Command.Create;
 using Application.Features.Questions.Command.Update;
 using Application.Features.Questions.Dto;
+using Application.Features.Questions.Dto.ForPersonQuestion;
 using Application.Features.Questions.Model;
 using AutoMapper;
 using Core.Persistence.Paging;
@@ -21,5 +22,7 @@ public class QuestionProfiles : Profile
 
         CreateMap<Question, CreateQuestionDto>();
         CreateMap<Question, UpdateQuestinDto>();
+
+        CreateMap<Question, QuestionForPersonDto>();
     }
 }

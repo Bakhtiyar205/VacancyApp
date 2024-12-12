@@ -1,6 +1,7 @@
 ﻿using Application.Features.QuestionOptions.Command.Create;
 using Application.Features.QuestionOptions.Command.Update;
 using Application.Features.QuestionOptions.Dto;
+using Application.Features.QuestionOptions.Dto.ForPersonQuestion;
 using Application.Features.QuestionOptions.Model;
 using AutoMapper;
 using Core.Persistence.Paging;
@@ -23,6 +24,8 @@ public class QuestionOptionProfiles : Profile
 
         CreateMap<QuestionOption, CreateQuestionOptionDto>();
         CreateMap<QuestionOption, UpdateQuestionOptionDto>();
+
+        CreateMap<QuestionOption, OptionForPersonDto>();
 
 
     }

@@ -40,7 +40,7 @@ public class PersonController : BaseController
         return Ok(await Mediator!.Send(new AddCvCommand(id, file), cancellationToken));
     }
 
-    [HttpGet("getCv/{id}")]
+    [HttpGet("cv/{id}")]
     public async Task<IActionResult> GetCv([FromRoute] int id, CancellationToken cancellationToken)
     {
         var path = await Mediator!.Send(new GetCvData(id), cancellationToken);

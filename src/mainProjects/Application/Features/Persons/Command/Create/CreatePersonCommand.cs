@@ -44,7 +44,7 @@ public class CreatePersonCommandHandler(IPersonService personService, IVacancySe
     {
         var questionList = await questionService.GetQuestionForPerson(vacancy.Id, vacancy.ExamQuestionCount, cancellationToken);
 
-        var personQuestion = questionList.Select(x => new PersonQuestion { PersonId = person.Id, QuestionId = x.Id }).ToList();
+        var personQuestion = questionList.Select(x => new PersonQuestion { PersonId = person.Id, QuestionId = x.Id , VacancyId = vacancy.Id}).ToList();
 
         personQuestionService.CreateRange(personQuestion);
     }

@@ -3,11 +3,10 @@ using Application.Services.DateTimeProviders;
 using Application.Services.PersonServices;
 using Application.Services.VacancyServices;
 using AutoMapper;
-using Core.CrossCuttingConcerns.Exceptions;
 using Domain.Entities;
 using MediatR;
 
-namespace Application.Features.Persons.Command.AgreeExam;
+namespace Application.Features.Persons.Command.AgreeExam    ;
 public class AgreeExamCommand : IRequest<bool>
 {
     public int PersonId { get; set; }
