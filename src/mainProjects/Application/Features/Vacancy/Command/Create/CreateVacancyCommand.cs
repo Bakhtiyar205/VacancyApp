@@ -9,6 +9,7 @@ public class CreateVacancyCommand : IRequest<CreateVacancyDto>
 {
     public string Title { get; set; } = default!;
     public string Description { get; set; } = default!;
+    public int ExamQuestionCount { get; set; }
     public DateTime? StartDate { get; set; }
     public DateTime? EndDate { get; set; }
 }
