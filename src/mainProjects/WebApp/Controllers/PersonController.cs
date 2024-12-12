@@ -6,6 +6,7 @@ using Application.Features.Persons.Query.GetCv;
 using Application.Features.Persons.Query.GetList;
 using Core.Application.Requests;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Primitives;
 
 namespace WebApp.Controllers;
 
@@ -34,10 +35,12 @@ public class PersonController : BaseController
         return Ok(await Mediator!.Send(agreeExamCommand, cancellationToken));
     }
 
-    [HttpPut("cv/{id}")]
-    public async Task<IActionResult> AddCv([FromRoute] int id, [FromForm] IFormFile file, CancellationToken cancellationToken)
+    [HttpPut("cv")]
+    public async Task<IActionResult> AddCv(CancellationToken cancellationToken)
     {
-        return Ok(await Mediator!.Send(new AddCvCommand(id, file), cancellationToken));
+        var file = Request.Form.Files[0];
+        var data = Convert.ToInt32(Request.Form["data"]);
+        return Ok(await Mediator!.Send(new AddCvCommand(data, file), cancellationToken));
     }
 
     [HttpGet("cv/{id}")]
