@@ -11,4 +11,6 @@ public interface IQuestionService
     Task<Question> GetAsync(int id, CancellationToken cancellationToken = default);
     Task<IList<Question>> GetQuestionForPerson(int vacancyId, int examQuestionCount, CancellationToken cancellationToken = default);
     Task<IPaginate<Question>> GetPaginatedAsync(int pageNumber, int pageSize,int vacancyId, CancellationToken cancellationToken = default);
+    Task<IList<Question>> GetQuestionsAsync(IEnumerable<int> ids, CancellationToken cancellationToken = default);
+
 }

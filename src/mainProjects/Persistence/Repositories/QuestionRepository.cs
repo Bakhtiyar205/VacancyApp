@@ -19,4 +19,9 @@ internal class QuestionRepository : EfRepositoryBase<Question, AppDbContext>, IQ
             .AsNoTracking()
             .ToListAsync(cancellationToken);
     }
+
+    public async Task<IList<Question>> GetQuestionsAsync(IEnumerable<int> ids, CancellationToken cancellationToken)
+    {
+        return await Query().Where(id => ids.Contains(id.Id)).Include(m => m.QuestionOptions.Where(m=>!m.IsDeleted)).ToListAsync(cancellationToken);
+    }
 }

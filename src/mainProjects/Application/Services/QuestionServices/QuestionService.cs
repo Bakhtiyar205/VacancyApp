@@ -13,6 +13,7 @@ public class QuestionService(IQuestionRepository questionRepository, QuestionRul
         return await questionRepository.AddAsync(request);
     }
 
+
     public async Task DeleteAsync(Question question, CancellationToken cancellationToken = default)
     {
         question.IsDeleted = true;
@@ -51,6 +52,11 @@ public class QuestionService(IQuestionRepository questionRepository, QuestionRul
     public async Task<IList<Question>> GetQuestionForPerson(int vacancyId, int examQuestionCount, CancellationToken cancellationToken = default)
     {
         return await questionRepository.GetQuestionsByVacancyIdAsync(vacancyId, examQuestionCount, cancellationToken);
+    }
+
+    public async Task<IList<Question>> GetQuestionsAsync(IEnumerable<int> ids, CancellationToken cancellationToken = default)
+    {
+        return await questionRepository.GetQuestionsAsync(ids, cancellationToken: cancellationToken);
     }
     #endregion
 }

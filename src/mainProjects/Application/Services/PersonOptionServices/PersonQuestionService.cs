@@ -46,6 +46,11 @@ public class PersonQuestionService(IPersonQuestionRepository personQuestionRepos
         return await personQuestionRepository.GetListAsync(pv => pv.QuestionId == questionId, enableTracking: false, cancellationToken: cancellationToken);
     }
 
+    public async Task<IList<PersonQuestion>> GetPersonIdAsync(int person, CancellationToken cancellationToken)
+    {
+        return await personQuestionRepository.GetListAsync(pv => pv.PersonId == person, cancellationToken: cancellationToken);
+    }
+
     public async Task<IList<PersonQuestion>> GetListByPersonVacancyIdAsync(int personId, int vacancyId, CancellationToken cancellationToken = default)
     {
         return  await personQuestionRepository

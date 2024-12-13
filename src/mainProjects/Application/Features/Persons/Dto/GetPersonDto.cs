@@ -9,5 +9,7 @@ public class GetPersonDto : BaseDto
     public string? Email { get; set; }
     public string? PhoneNumber { get; set; }
     public string? CvPath { get; set; }
+    public int CorrectAnswers { get; set; }
+    public int TotalAnswers { get; set; }
     public IList<PersonVacancyForPersonDto> PersonVacancies { get; set; } = new List<PersonVacancyForPersonDto>();
 }

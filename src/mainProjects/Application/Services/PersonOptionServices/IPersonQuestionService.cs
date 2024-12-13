@@ -12,4 +12,5 @@ public interface IPersonQuestionService
     Task<IList<PersonQuestion>> GetByPersonIdAsync(int personId, CancellationToken cancellationToken = default);
     Task<IList<PersonQuestion>> GetByQuestionIdAsync(int questionId, CancellationToken cancellationToken = default);
     Task<IList<PersonQuestion>> GetListByPersonVacancyIdAsync(int personId, int vacancyId, CancellationToken cancellationToken = default);
+    Task<IList<PersonQuestion>> GetPersonIdAsync(int person, CancellationToken cancellationToken);
 }

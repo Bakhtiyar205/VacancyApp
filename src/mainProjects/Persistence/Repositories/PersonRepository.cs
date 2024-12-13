@@ -13,6 +13,8 @@ internal class PersonRepository : EfRepositoryBase<Person, AppDbContext>, IPerso
 
     public async Task<Person?> GetPersonWithVacancy(int personId, CancellationToken cancellationToken = default)
     {
-        return await GetAsNoTrackingAsync(p => p.Id == personId, query => query.Include(m=> m.PersonVacancies).ThenInclude(m=>m.Vacancy));
+        return await GetAsNoTrackingAsync(p => p.Id == personId,
+            query => query.Include(m => m.PersonVacancies)
+                          .ThenInclude(m => m.Vacancy));
     }
 }

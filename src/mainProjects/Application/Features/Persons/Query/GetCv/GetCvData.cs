@@ -3,8 +3,6 @@ using Application.Services.PersonServices;
 using AutoMapper;
 using Core.CrossCuttingConcerns.Exceptions;
 using MediatR;
-using System.IO;
-using System.Net;
 
 namespace Application.Features.Persons.Query.GetCv;
 public class GetCvData(int id) : IRequest<GetCvDto>
